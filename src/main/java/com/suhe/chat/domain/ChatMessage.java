@@ -1,4 +1,4 @@
-package com.suhe.chat.backend;
+package com.suhe.chat.domain;
 
 public class ChatMessage {
     private String from;

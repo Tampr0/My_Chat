@@ -1,8 +1,12 @@
 package com.suhe.chat;
 
-import com.suhe.chat.backend.ChatMessage;
+import com.suhe.chat.domain.ChatMessage;
+import org.apache.catalina.Context;
+import org.apache.catalina.session.StandardManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.UnicastProcessor;
@@ -14,6 +18,8 @@ public class MyChatApplication {
         SpringApplication.run(MyChatApplication.class, args);
     }
 
+
+
     @Bean
     UnicastProcessor<ChatMessage> publisher(){
         return UnicastProcessor.create();
@@ -22,4 +28,5 @@ public class MyChatApplication {
     Flux<ChatMessage> messages(UnicastProcessor<ChatMessage> publisher) {
         return publisher.replay(30).autoConnect();
     }
+
 }

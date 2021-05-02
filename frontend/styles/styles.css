@@ -7,8 +7,23 @@
 .message-list {
     overflow-y: scroll;
     width: 100%;
+    flex-direction: column-reverse;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .message-list p {
     width: 100%;
+}
+
+.simple-message {
+    padding: 15px;
+    background-color: #233348;
+    border-radius: 20px;
+}
+
+.simple-message p {
+    word-wrap: break-word;
+    margin: 0;
+    color: white;
 }
