@@ -11,6 +11,9 @@ sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://maven.vaadin.com/vaadin-addons'
+    }
 }
 
 ext {
@@ -22,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'io.projectreactor:reactor-core'
     implementation 'com.vaadin:vaadin-spring-boot-starter'
+    compile "com.github.appreciated:apexcharts:2.0.0.beta11"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

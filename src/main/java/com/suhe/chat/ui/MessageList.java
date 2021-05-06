@@ -1,9 +1,11 @@
 package com.suhe.chat.ui;
 
 import com.suhe.chat.domain.ChatMessage;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import reactor.core.publisher.Flux;
 
 /**
  *  Added two extra features.
@@ -16,25 +18,33 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class MessageList extends VerticalLayout {
 
+//    private final Flux<ChatMessage> messages;
+
     public MessageList() {
         addClassName("message-list");
     }
 
-    public void addMessage(ChatMessage message, String userName) {
+    public void addMessage(ChatMessage message, String userName, int random) {
         Paragraph messageParagraph = new Paragraph();
         Div messageDiv = new Div(messageParagraph);
         messageDiv.addClassName("simple-message");
         messageDiv.getElement().getThemeList().add("dark");
 
         if (message.getFrom().equals(userName)) {
-            messageParagraph.setText(message.getMessage());
+            messageParagraph.setText(random + " " + message.getMessage());
             setAlignSelf(Alignment.END, messageDiv);
         } else {
-            messageParagraph.setText("[" + message.getFrom() + "] "+ message.getMessage());
+            messageParagraph.setText(random + " [" + message.getFrom() + "] "+ message.getMessage());
             setAlignSelf(Alignment.START, messageDiv);
         }
 
         super.addComponentAsFirst(messageDiv);
         messageParagraph.getElement().callJsFunction("scrollIntoView");
     }
+
+    @Override
+    protected void onDetach(DetachEvent detachEvent) {
+        System.out.println("MessageList has been detached");
+    }
+
 }

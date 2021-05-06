@@ -2,9 +2,13 @@
 In progress ...
 
 Upcoming...
-- after refreshing, already send messages should be displayed on the view.
+- separate view with all users that are actually on the chat.
+
 - handle logout / change nick.
-- handle UnicastProcessor deprecating.
+- error handling - heroku error - code = H15, desc= Idle connection
+- exception handling - UIDetachedException.
+- bug fix - Safari - when messageView is overwhelmed, input TextFields changes size or even disappears, same with sendButton.
+- link handling (make them openable by clicking)
 
 ### Project description
 Hi, there. This is a first project where I go a bit deeper into asynchronous issues.
@@ -13,10 +17,17 @@ Hi, there. This is a first project where I go a bit deeper into asynchronous iss
 Simple chat UI implement with Vaadin library.
 
 ### LOGS
+6.05.2021
+- messages which were already sent were not displayed on messageView after refreshing - FIXED.
+
+4.05.2021
+- deprecating UnicastProcessor implementation changed to Sinks.
+
 2.05.2021
 - some styling - new messages are displayed at the bottom of the view.
-- SignedInBroadcast - after user signed in, all opened windows/tabs within same session are updating asynchronously, by registered broadcast listeners.
+- application stores user nick temporarily. 
 - many tabs/windows opened within one session handling - to prevent from chatting as a multi-tab user.
+- SignedInBroadcast - after user signed in, all opened windows/tabs within same session are updating asynchronously, by registered broadcast listeners.
 
 earlier ...
 - added simple validation of user name. 

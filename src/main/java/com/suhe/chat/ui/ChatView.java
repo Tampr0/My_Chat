@@ -15,7 +15,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.shared.Registration;
+import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 import reactor.core.publisher.UnicastProcessor;
 
 import java.util.Objects;
@@ -27,7 +29,7 @@ import static com.suhe.chat.service.ChatConfig.*;
 @Push
 public class ChatView extends VerticalLayout {
 
-    private final UnicastProcessor<ChatMessage> publisher;
+    private final Sinks.Many<ChatMessage> publisher;
     private final Flux<ChatMessage> messages;
     private String username;
     private HorizontalLayout singInLayout = new HorizontalLayout();
@@ -35,13 +37,12 @@ public class ChatView extends VerticalLayout {
     private Registration registration;
     private SignedInBroadcast signedInBroadcast;
 
-    public ChatView(UnicastProcessor<ChatMessage> publisher,
+    public ChatView(Sinks.Many<ChatMessage> publisher,
                     Flux<ChatMessage> messages,
                     SignedInBroadcast signedInBroadcast) {
         this.publisher = publisher;
         this.messages = messages;
         this.signedInBroadcast = signedInBroadcast;
-
 
         setSizeFull();
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
@@ -50,12 +51,12 @@ public class ChatView extends VerticalLayout {
         header.getElement().getThemeList().add("dark");
         add(header);
 
-        buildSingInLayout();
-
-        if (signedInBroadcast.isUserLoggedIn()) {
-            remove(singInLayout);
-            chatLayout();
-        }
+//        buildSingInLayout();
+//
+//        if (signedInBroadcast.isUserLoggedIn()) {
+//            remove(singInLayout);
+//            chatLayout();
+//        }
     }
 
     private void buildSingInLayout() {
@@ -96,7 +97,7 @@ public class ChatView extends VerticalLayout {
 
         messages.subscribe(message -> {
             getUI().ifPresent(ui -> {
-                ui.access(() -> messageList.addMessage(message, username));
+                ui.access(() -> messageList.addMessage(message, username, message.getRandom()));
             });
         });
 
@@ -112,7 +113,7 @@ public class ChatView extends VerticalLayout {
         sendButton.addClickShortcut(Key.ENTER);
 
         sendButton.addClickListener(click -> {
-            publisher.onNext(new ChatMessage(username, messageField.getValue()));
+            publisher.tryEmitNext((new ChatMessage(username, messageField.getValue())));
             messageField.clear();
             messageField.focus();
         });
@@ -148,17 +149,19 @@ public class ChatView extends VerticalLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         if (!signedInBroadcast.isUserLoggedIn())   {
+            buildSingInLayout();    //added
             registration = signedInBroadcast.register(username -> {
-                if (attachEvent.getUI().access(() -> {
+
+                attachEvent.getUI().access(() -> {
                     this.username = username;
                     remove(singInLayout);
                     chatLayout();
-                }).isDone()) {
-                    registration.remove();
-                }
+                });
             });
+
         } else {
             this.username = signedInBroadcast.getUsername();
+            chatLayout();
         }
     }
 
