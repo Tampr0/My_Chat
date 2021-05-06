@@ -14,8 +14,10 @@ import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.UnicastProcessor;
@@ -35,6 +37,7 @@ public class ChatView extends VerticalLayout {
     private HorizontalLayout singInLayout = new HorizontalLayout();
 
     private Registration registration;
+    private Disposable chatMessageReceiveRegistration;
     private SignedInBroadcast signedInBroadcast;
 
     public ChatView(Sinks.Many<ChatMessage> publisher,
@@ -50,13 +53,6 @@ public class ChatView extends VerticalLayout {
         H1 header = new H1("Simple Chat");
         header.getElement().getThemeList().add("dark");
         add(header);
-
-//        buildSingInLayout();
-//
-//        if (signedInBroadcast.isUserLoggedIn()) {
-//            remove(singInLayout);
-//            chatLayout();
-//        }
     }
 
     private void buildSingInLayout() {
@@ -93,9 +89,9 @@ public class ChatView extends VerticalLayout {
 
     private void chatLayout() {
         MessageList messageList = new MessageList();
-        add(messageList, inputLayout());
+        add(signOut(), messageList, inputLayout());
 
-        messages.subscribe(message -> {
+        chatMessageReceiveRegistration = messages.subscribe(message -> {
             getUI().ifPresent(ui -> {
                 ui.access(() -> messageList.addMessage(message, username, message.getRandom()));
             });
@@ -122,6 +118,18 @@ public class ChatView extends VerticalLayout {
         layout.add(messageField, sendButton);
         layout.setWidthFull();
         layout.expand(messageField);
+        return layout;
+    }
+
+    private Component signOut() {
+        HorizontalLayout layout = new HorizontalLayout();
+        layout.setWidthFull();
+        layout.setJustifyContentMode(JustifyContentMode.END);
+
+        layout.add(new Button("Sign out", e -> {
+            VaadinSession.getCurrent().getSession().invalidate();
+        }));
+
         return layout;
     }
 
@@ -163,6 +171,9 @@ public class ChatView extends VerticalLayout {
             this.username = signedInBroadcast.getUsername();
             chatLayout();
         }
+
+        attachEvent.getSession();
+
     }
 
     /** In case implement inner routing in future. */
@@ -172,6 +183,7 @@ public class ChatView extends VerticalLayout {
             registration.remove();
             registration = null;
         }
+        chatMessageReceiveRegistration.dispose();
     }
 }
 
