@@ -44,12 +44,12 @@ public class MainView extends AppLayout implements AfterNavigationObserver {
         header.getElement().getThemeList().add("dark");
         logo = new H1("Simple Chat ");
 
-        VerticalLayout testLayout = new VerticalLayout();
-        testLayout.setSpacing(false);
-        testLayout.setPadding(false);
-        testLayout.add(new Button("TEST", e -> {
-            getCurrentUsersSet().forEach(s -> System.out.println(s));
-        }));
+//        VerticalLayout testLayout = new VerticalLayout();
+//        testLayout.setSpacing(false);
+//        testLayout.setPadding(false);
+//        testLayout.add(new Button("TEST", e -> {
+//            getCurrentUsersSet().forEach(s -> System.out.println(s));
+//        }));
 
         logoutButton = new Button("Log out", e -> {
             String currentUserName = (String) VaadinSession.getCurrent().getAttribute(USER_NAME);
