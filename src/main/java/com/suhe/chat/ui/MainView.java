@@ -58,7 +58,7 @@ public class MainView extends AppLayout implements AfterNavigationObserver {
         });
         logoutButton.setClassName("logout-button");
 
-        header.add(logo, testLayout, logoutButton);
+        header.add(logo, logoutButton);
         logoutButton.setVisible(false);
 
         return header;
