@@ -1,18 +1,16 @@
 package com.suhe.chat.domain;
 
-import java.util.Random;
+import java.time.LocalTime;
 
 public class ChatMessage {
     private String from;
     private String message;
-    private int random;
+    private LocalTime time;
 
     public ChatMessage(String from, String message) {
         this.from = from;
         this.message = message;
-
-        Random r = new Random();
-        random = r.nextInt(10);
+        this.time = LocalTime.now();
     }
 
     public String getFrom() {
@@ -23,7 +21,7 @@ public class ChatMessage {
         return message;
     }
 
-    public int getRandom() {
-        return random;
+    public LocalTime getTime() {
+        return time;
     }
 }

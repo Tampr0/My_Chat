@@ -3,10 +3,8 @@ In progress ...
 
 Upcoming...
 - implement database for logs storing.
-- separate layout with all users that are on the chat at the moment.
-- handle removing nick after user sign out
+- separate layout which shows all users that are online on the chat at the moment.
 - error handling - heroku error - code = H15, desc= Idle connection
-- exception handling - .
 - bug fix - Safari - when messageView is overwhelmed, input TextFields changes size or even disappears, same with sendButton.
 - link handling (make them openable by clicking)
 
@@ -17,9 +15,14 @@ Hi, there. This is a first project where I go a bit deeper into asynchronous iss
 Simple chat UI implement with Vaadin library.
 
 ### LOGS
+17.05.2021
+- expand project with new classes.
+- some cleans up
+- handle removing nick after user log out - ADDED
+
 6.05.2021
-- UIDetachedException FIXED - needed to handle disposing chat messages subscription.
-- log out button added
+- UIDetachedException HANDLED - needed to handle disposing chat messages subscription.
+- logout button added
 - messages which were already sent were not displayed on messageView after refreshing - FIXED.
 
 4.05.2021

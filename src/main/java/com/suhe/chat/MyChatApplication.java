@@ -1,16 +1,11 @@
 package com.suhe.chat;
 
 import com.suhe.chat.domain.ChatMessage;
-import org.apache.catalina.Context;
-import org.apache.catalina.session.StandardManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
-import reactor.core.publisher.UnicastProcessor;
 
 @SpringBootApplication
 public class MyChatApplication {

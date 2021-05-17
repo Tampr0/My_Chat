@@ -1,7 +1,25 @@
-.main-view h1 {
+.main-header {
+}
+
+.main-header h1 {
+    flex-grow: 1;
     margin: 0;
     padding: 16px;
-    width: 100%;
+
+}
+
+.logout-button {
+    margin-right: 16px;
+}
+
+
+.sign-in-layout {
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.start-button {
+    margin-top: 30px;
 }
 
 .message-list {
